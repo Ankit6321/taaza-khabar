@@ -1,4 +1,4 @@
-package com.example.taazakhabar.ui.theme
+package com.example.taazakhabar.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
