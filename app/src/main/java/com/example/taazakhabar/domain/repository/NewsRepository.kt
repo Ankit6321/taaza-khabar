@@ -1,8 +1,10 @@
 package com.example.taazakhabar.domain.repository
 
+import androidx.paging.PagingData
 import com.example.taazakhabar.domain.model.News
+import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {
 
-    suspend fun getNews(category: String): Result<List<News>>
+    fun getNews(category: String, trendingTopics: Boolean = false): Flow<PagingData<News>>
 }

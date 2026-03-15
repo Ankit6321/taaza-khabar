@@ -1,4 +1,4 @@
-package com.example.taazakhabar.domain
+package com.example.taazakhabar.domain.di
 
 import com.example.taazakhabar.data.remote.ApiService
 import com.example.taazakhabar.data.repository.NewsRepositoryImpl
