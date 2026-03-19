@@ -1,4 +1,4 @@
-package com.example.taazakhabar.data.di
+package com.example.taazakhabar.di
 
 import com.example.taazakhabar.data.remote.ApiService
 import dagger.Module
@@ -9,11 +9,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
-object DataModule {
-    // https://inshorts.com/api/en/news?category=top_stories&max_limit=10&include_card_data=true
-
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofitInstance(): Retrofit {

@@ -1,16 +1,15 @@
 package com.example.taazakhabar.domain.useCases
 
-import androidx.paging.PagingData
 import com.example.taazakhabar.domain.model.Article
 import com.example.taazakhabar.domain.model.NewsCategory
 import com.example.taazakhabar.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetNewsUseCase @Inject constructor(
+class GetCachedTrendingNewsUseCase @Inject constructor(
     private val newsRepository: NewsRepository
 ) {
-    operator fun invoke(category: NewsCategory): Flow<PagingData<Article>> {
-        return newsRepository.getNews(category.name.toLowerCase())
+    operator fun invoke(): Flow<List<Article>> {
+        return newsRepository.getCachedTrendingNews()
     }
 }

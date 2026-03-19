@@ -1,6 +1,5 @@
 package com.example.taazakhabar.presentation.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -22,10 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.taazakhabar.domain.model.News
+import com.example.taazakhabar.domain.model.Article
 
 @Composable
-fun NewsItemSmall(modifier: Modifier = Modifier, news: News) {
+fun NewsItemSmall(modifier: Modifier = Modifier, article: Article) {
     Card(modifier = modifier
         .fillMaxWidth()
         .height(100.dp),
@@ -38,7 +37,7 @@ fun NewsItemSmall(modifier: Modifier = Modifier, news: News) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = news.title,
+                text = article.title,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
@@ -47,7 +46,7 @@ fun NewsItemSmall(modifier: Modifier = Modifier, news: News) {
             )
             Spacer(modifier = Modifier.width(8.dp))
             AsyncImage(
-                model = news.imageBaseUrl,
+                model = article.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxHeight()

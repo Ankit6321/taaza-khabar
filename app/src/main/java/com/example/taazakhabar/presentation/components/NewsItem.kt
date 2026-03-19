@@ -15,17 +15,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.taazakhabar.domain.model.News
+import com.example.taazakhabar.domain.model.Article
 
 @Composable
-fun NewsItem(news: News, modifier: Modifier = Modifier) {
+fun NewsItem(article: Article, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium
     ) {
         Column {
             AsyncImage(
-                model = news.imageBaseUrl,
+                model = article.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -34,7 +34,7 @@ fun NewsItem(news: News, modifier: Modifier = Modifier) {
             )
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(
-                    text = news.title,
+                    text = article.title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     maxLines = 2,
@@ -42,14 +42,14 @@ fun NewsItem(news: News, modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = news.content,
+                    text = article.content,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "By ${news.author}",
+                    text = "By ${article.sourceName}",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.outline
                 )

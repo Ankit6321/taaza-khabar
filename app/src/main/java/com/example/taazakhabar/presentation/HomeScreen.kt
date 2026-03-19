@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.taazakhabar.presentation.components.NewsItem
 import com.example.taazakhabar.presentation.components.NewsItemSmall
 import com.example.taazakhabar.presentation.components.NewsList
 
@@ -53,8 +52,8 @@ fun HomeScreen(
                 fontWeight = FontWeight.SemiBold,
             )
             Spacer(Modifier.height(8.dp))
-            NewsList(data = viewModel.trendingNews, listItem = { news ->
-                NewsItemSmall(news = news)
+            NewsList(data = viewModel.trendingNews, cachedData = viewModel.cachedTrendingNews, listItem = { news ->
+                NewsItemSmall(article = news)
             })
 
         }

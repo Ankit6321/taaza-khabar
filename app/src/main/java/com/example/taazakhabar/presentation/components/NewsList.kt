@@ -1,34 +1,37 @@
 package com.example.taazakhabar.presentation.components
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScrollModifierNode
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.taazakhabar.domain.model.News
+import com.example.taazakhabar.domain.model.Article
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun NewsList(
     modifier: Modifier = Modifier,
-    data: Flow<PagingData<News>>,
-    listItem: @Composable (News) -> Unit
+    data: Flow<PagingData<Article>>,
+    cachedData: Flow<List<Article>>,
+    listItem: @Composable ((Article) -> Unit)
 ) {
     val pagingData = data.collectAsLazyPagingItems()
+    val cachedData by cachedData.collectAsStateWithLifecycle(emptyList())
 
     Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(
@@ -85,6 +88,12 @@ fun NewsList(
                         modifier = Modifier.align(Alignment.Center),
                         color = MaterialTheme.colorScheme.error
                     )
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        items(cachedData, key = { it.id }) {article->
+                            listItem(article)
+                            Spacer(Modifier.height(16.dp))
+                        }
+                    }
                 }
             }
         }
