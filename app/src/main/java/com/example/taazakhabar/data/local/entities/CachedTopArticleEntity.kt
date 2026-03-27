@@ -2,11 +2,9 @@ package com.example.taazakhabar.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.taazakhabar.data.local.fromStringList
-import com.example.taazakhabar.data.remote.dto.NewsList
 
 @Entity(tableName = "cached_all_articles_table")
-data class CachedAllArticleEntity(
+data class CachedTopArticleEntity(
     @PrimaryKey(autoGenerate = false)
     override val id: String,
     override val sourceUrl: String,

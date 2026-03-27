@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.taazakhabar.data.local.ArticleDatabase
-import com.example.taazakhabar.data.local.dao.CachedAllArticleDao
+import com.example.taazakhabar.data.local.dao.CachedTopArticleDao
 import com.example.taazakhabar.data.local.dao.CachedEntertainmentArticleDao
 import com.example.taazakhabar.data.local.dao.CachedScienceArticleDao
 import com.example.taazakhabar.data.local.dao.CachedSportsArticleDao
@@ -25,7 +25,7 @@ class NewsRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val articleDatabase: ArticleDatabase
 ) : NewsRepository {
-    private val cachedAllArticleDao: CachedAllArticleDao = articleDatabase.cachedAllArticleDao
+    private val cachedTopArticleDao: CachedTopArticleDao = articleDatabase.cachedTopArticleDao
     private val cachedSportsArticleDao: CachedSportsArticleDao =
         articleDatabase.cachedSportsArticleDao
     private val cachedScienceArticleDao: CachedScienceArticleDao =
@@ -58,7 +58,7 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
     override fun getCachedAllNews(): Flow<List<Article>> {
-        return cachedAllArticleDao.getCachedArticles().map { articles ->
+        return cachedTopArticleDao.getCachedArticles().map { articles ->
             articles.map { article -> article.toDomain() }
         }
     }

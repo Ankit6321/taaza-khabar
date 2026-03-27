@@ -3,13 +3,13 @@ package com.example.taazakhabar.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.taazakhabar.data.local.ArticleDatabase
-import com.example.taazakhabar.data.local.dao.CachedAllArticleDao
+import com.example.taazakhabar.data.local.dao.CachedTopArticleDao
 import com.example.taazakhabar.data.local.dao.CachedEntertainmentArticleDao
 import com.example.taazakhabar.data.local.dao.CachedScienceArticleDao
 import com.example.taazakhabar.data.local.dao.CachedSportsArticleDao
 import com.example.taazakhabar.data.local.dao.CachedTechnologyArticleDao
 import com.example.taazakhabar.data.local.dao.CachedTrendingArticleDao
-import com.example.taazakhabar.data.local.entities.CachedAllArticleEntity
+import com.example.taazakhabar.data.local.entities.CachedTopArticleEntity
 import com.example.taazakhabar.data.local.entities.CachedEntertainmentArticleEntity
 import com.example.taazakhabar.data.local.entities.CachedScienceArticleEntity
 import com.example.taazakhabar.data.local.entities.CachedSportsArticleEntity
@@ -28,7 +28,7 @@ class NewsPagingSource(
     private val category: String,
     private val trendingTopics: Boolean
 ) : PagingSource<Int, Article>() {
-    private val cachedAllArticleDao: CachedAllArticleDao = articleDatabase.cachedAllArticleDao
+    private val cachedTopArticleDao: CachedTopArticleDao = articleDatabase.cachedTopArticleDao
     private val cachedSportsArticleDao: CachedSportsArticleDao =
         articleDatabase.cachedSportsArticleDao
     private val cachedScienceArticleDao: CachedScienceArticleDao =
@@ -50,6 +50,7 @@ class NewsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val currentLimit = params.key ?: Constants.PAGE_SIZE
+        val normalizedCategory = category.lowercase().trim()
         return try {
             var response: NewsResponse
             if (!trendingTopics)
@@ -60,14 +61,14 @@ class NewsPagingSource(
             if (params.key == null && response.data.news_list.isNotEmpty()) {
                 if (!trendingTopics)
                     when (category) {
-                        "all_news" -> {
-                            cachedAllArticleDao.deleteCachedArticles()
+                        "top_stories" -> {
+                            cachedTopArticleDao.deleteCachedArticles()
 
                             val cacheList =
                                 response.data.news_list.take(Constants.CACHE_SIZE).toEntity(
-                                    constructor = ::CachedAllArticleEntity
+                                    constructor = ::CachedTopArticleEntity
                                 )
-                            cachedAllArticleDao.addCachedArticles(cacheList)
+                            cachedTopArticleDao.addCachedArticles(cacheList)
                         }
 
                         "trending" -> {

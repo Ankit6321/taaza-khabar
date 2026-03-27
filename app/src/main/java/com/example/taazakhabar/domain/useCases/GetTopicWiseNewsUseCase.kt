@@ -11,6 +11,8 @@ class GetTopicWiseNewsUseCase @Inject constructor(
     private val newsRepository: NewsRepository
 ) {
     operator fun invoke(category: NewsTopics): Flow<PagingData<Article>> {
-        return newsRepository.getNews(category.name.toLowerCase(), trendingTopics = true)
+        return newsRepository.getNews(
+            category.name.toLowerCase().trim(), trendingTopics = true
+        )
     }
 }
