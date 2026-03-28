@@ -1,5 +1,6 @@
 package com.example.taazakhabar.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,10 +25,15 @@ import coil.compose.AsyncImage
 import com.example.taazakhabar.domain.model.Article
 
 @Composable
-fun NewsItemSmall(modifier: Modifier = Modifier, article: Article) {
+fun NewsItemSmall(
+    modifier: Modifier = Modifier, 
+    article: Article,
+    onClick: () -> Unit
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -68,7 +74,7 @@ fun NewsItemSmall(modifier: Modifier = Modifier, article: Article) {
             Spacer(modifier = Modifier.height(4.dp))
             
             Text(
-                text = article.content, // Often a snippet or date is better here, but using content as requested
+                text = article.content,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.outline,
                 maxLines = 1,

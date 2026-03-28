@@ -7,10 +7,12 @@ import androidx.paging.cachedIn
 import com.example.taazakhabar.domain.model.Article
 import com.example.taazakhabar.domain.model.NewsCategory
 import com.example.taazakhabar.domain.model.NewsTopics
+import com.example.taazakhabar.domain.useCases.DeleteAllSavedArticlesUseCase
 import com.example.taazakhabar.domain.useCases.GetCachedTopNewsUseCase
 import com.example.taazakhabar.domain.useCases.GetCachedTopicNewsUseCase
 import com.example.taazakhabar.domain.useCases.GetCachedTrendingNewsUseCase
 import com.example.taazakhabar.domain.useCases.GetNewsUseCase
+import com.example.taazakhabar.domain.useCases.GetSavedArticlesUseCase
 import com.example.taazakhabar.domain.useCases.GetTopicWiseNewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,11 +32,13 @@ class NewsViewModel @Inject constructor(
     private val getCachedTrendingNewsUseCase: GetCachedTrendingNewsUseCase,
     private val getCachedTopNewsUseCase: GetCachedTopNewsUseCase,
     private val getTopicWiseNewsUseCase: GetTopicWiseNewsUseCase,
-    private val getCachedTopicNewsUseCase: GetCachedTopicNewsUseCase
+    private val getCachedTopicNewsUseCase: GetCachedTopicNewsUseCase,
+    private val getSavedArticlesUseCase: GetSavedArticlesUseCase,
+    private val deleteAllSavedArticlesUseCase: DeleteAllSavedArticlesUseCase
 ) : ViewModel() {
 
     val trendingNews = getNewsUseCase(NewsCategory.TRENDING).cachedIn(viewModelScope)
-    val allNews = getNewsUseCase(NewsCategory.TOP_STORIES).cachedIn(viewModelScope)
+    val topNews = getNewsUseCase(NewsCategory.TOP_STORIES).cachedIn(viewModelScope)
 
     val cachedTrendingNews = getCachedTrendingNewsUseCase().stateIn(
         viewModelScope,
@@ -41,13 +46,13 @@ class NewsViewModel @Inject constructor(
         emptyList()
     )
 
-    val cachedAllNews = getCachedTopNewsUseCase().stateIn(
+    val cachedTopNews = getCachedTopNewsUseCase().stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(3000),
         emptyList()
     )
 
-    private val _selectedTopic = MutableStateFlow(NewsTopics.ENTERTAINMENT)
+    private val _selectedTopic = MutableStateFlow(NewsTopics.SCIENCE)
     val selectedTopic: StateFlow<NewsTopics> = _selectedTopic.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -64,7 +69,19 @@ class NewsViewModel @Inject constructor(
         emptyList()
     )
 
+    val savedArticles = getSavedArticlesUseCase().stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(3000),
+        emptyList()
+    )
+
     fun onTopicSelected(topic: NewsTopics) {
         _selectedTopic.value = topic
+    }
+
+    fun clearAllSavedArticles() {
+        viewModelScope.launch {
+            deleteAllSavedArticlesUseCase()
+        }
     }
 }

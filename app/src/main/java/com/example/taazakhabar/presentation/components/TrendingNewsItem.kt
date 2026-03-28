@@ -1,7 +1,6 @@
 package com.example.taazakhabar.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,16 +24,11 @@ import coil.compose.AsyncImage
 import com.example.taazakhabar.domain.model.Article
 
 @Composable
-fun NewsItem(
-    article: Article,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun NewsItem(article: Article, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(200.dp)
-            .clickable { onClick() },
+            .height(200.dp),
         shape = MaterialTheme.shapes.medium
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -45,6 +39,7 @@ fun NewsItem(
                 contentScale = ContentScale.Crop
             )
             
+            // Gradient overlay for text readability
             Box(
                 modifier = Modifier
                     .fillMaxSize()

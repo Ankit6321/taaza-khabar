@@ -11,6 +11,7 @@ import com.example.taazakhabar.data.local.dao.CachedSportsArticleDao
 import com.example.taazakhabar.data.local.dao.CachedTechnologyArticleDao
 import com.example.taazakhabar.data.local.dao.CachedTrendingArticleDao
 import com.example.taazakhabar.data.local.dao.SavedArticleDao
+import com.example.taazakhabar.data.local.entities.SavedArticleEntity
 import com.example.taazakhabar.data.local.toDomain
 import com.example.taazakhabar.data.paging.NewsPagingSource
 import com.example.taazakhabar.data.remote.ApiService
@@ -91,5 +92,39 @@ class NewsRepositoryImpl @Inject constructor(
         return cachedTechnologyArticleDao.getCachedArticles().map { articles ->
             articles.map { article -> article.toDomain() }
         }
+    }
+
+    override suspend fun toggleSaveArticle(article: Article) {
+        val existing = savedArticleDao.getArticleById(article.id)
+        if (existing != null) {
+            savedArticleDao.deleteArticle(existing)
+        } else {
+            savedArticleDao.insertArticle(
+                SavedArticleEntity(
+                    id = article.id,
+                    sourceUrl = article.sourceUrl,
+                    sourceName = article.sourceName,
+                    imageUrl = article.imageUrl,
+                    title = article.title,
+                    content = article.content,
+                    createdAt = article.createdAt,
+                    categories = article.categories.joinToString(",")
+                )
+            )
+        }
+    }
+
+    override fun isArticleSaved(id: String): Flow<Boolean> {
+        return savedArticleDao.isArticleSaved(id)
+    }
+
+    override fun getSavedArticles(): Flow<List<Article>> {
+        return savedArticleDao.getAllSavedArticles().map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun deleteAllSavedArticles() {
+        savedArticleDao.deleteAllArticles()
     }
 }

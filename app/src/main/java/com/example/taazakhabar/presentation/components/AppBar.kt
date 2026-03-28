@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,9 +33,9 @@ import java.net.UnknownHostException
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaazaKhabarAppBar(
-    title: String = "TaazaKhabar",
     error: Throwable? = null,
     isRefreshing: Boolean = false,
+    actions: @Composable RowScope.() -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val isError = error != null && !isRefreshing
@@ -44,13 +45,14 @@ fun TaazaKhabarAppBar(
             modifier = Modifier.statusBarsPadding(),
             title = {
                 Text(
-                    text = title,
+                    text = "TaazaKhabar",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 22.sp,
                     letterSpacing = 0.5.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             },
+            actions = actions,
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 containerColor = MaterialTheme.colorScheme.surface
             )

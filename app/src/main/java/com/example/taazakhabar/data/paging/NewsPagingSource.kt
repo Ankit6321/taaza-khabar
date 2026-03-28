@@ -50,7 +50,6 @@ class NewsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val currentLimit = params.key ?: Constants.PAGE_SIZE
-        val normalizedCategory = category.lowercase().trim()
         return try {
             var response: NewsResponse
             if (!trendingTopics)
@@ -62,6 +61,7 @@ class NewsPagingSource(
                 if (!trendingTopics)
                     when (category) {
                         "top_stories" -> {
+                            println("cached successfully")
                             cachedTopArticleDao.deleteCachedArticles()
 
                             val cacheList =

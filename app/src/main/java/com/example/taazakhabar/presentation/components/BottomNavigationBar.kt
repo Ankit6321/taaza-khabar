@@ -1,5 +1,6 @@
 package com.example.taazakhabar.presentation.components
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Home
@@ -11,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 
 data class NavigationItem(
     val title: String,
@@ -29,7 +31,7 @@ fun BottomNavigationBar(
     selectedItem: Int = 0,
     onItemClick: (Int) -> Unit = {}
 ) {
-    NavigationBar(modifier = modifier) {
+    NavigationBar(modifier = modifier.height(100.dp)) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = selectedItem == index,

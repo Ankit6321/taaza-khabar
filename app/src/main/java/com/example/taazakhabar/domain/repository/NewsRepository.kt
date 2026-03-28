@@ -16,4 +16,8 @@ interface NewsRepository {
     fun getCachedScienceNews(): Flow<List<Article>>
     fun getCachedTechnologyNews(): Flow<List<Article>>
 
+    suspend fun toggleSaveArticle(article: Article)
+    fun isArticleSaved(id: String): Flow<Boolean>
+    fun getSavedArticles(): Flow<List<Article>>
+    suspend fun deleteAllSavedArticles()
 }
