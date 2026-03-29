@@ -40,7 +40,7 @@ import com.example.taazakhabar.domain.model.Article
 import com.example.taazakhabar.presentation.NewsViewModel
 import com.example.taazakhabar.presentation.components.NewsItem
 import com.example.taazakhabar.presentation.components.NewsItemSmall
-import com.example.taazakhabar.presentation.components.TaazaKhabarAppBar
+import com.example.taazakhabar.presentation.components.AppBar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,6 +55,7 @@ fun HomeScreen(
     
     val cachedTrending by viewModel.cachedTrendingNews.collectAsStateWithLifecycle()
     val cachedAll by viewModel.cachedTopNews.collectAsStateWithLifecycle()
+    val savedArticleIds by viewModel.savedArticleIds.collectAsStateWithLifecycle()
 
     val isRefreshing = allNews.loadState.refresh is LoadState.Loading || trendingNews.loadState.refresh is LoadState.Loading
     val refreshError = (allNews.loadState.refresh as? LoadState.Error) 
@@ -71,7 +72,7 @@ fun HomeScreen(
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            TaazaKhabarAppBar(
+            AppBar(
                 error = refreshError?.error,
                 isRefreshing = isRefreshing
             )
@@ -107,8 +108,9 @@ fun HomeScreen(
                                     items(count = trendingNews.itemCount) { index ->
                                         trendingNews[index]?.let { article ->
                                             NewsItem(
-                                                article = article,
+                                                article = article.copy(isSaved = savedArticleIds.contains(article.id)),
                                                 onClick = { onArticleClick(article) },
+                                                onToggleSave = { viewModel.toggleSaveArticle(article) },
                                                 modifier = Modifier.width(300.dp)
                                             )
                                         }
@@ -123,6 +125,7 @@ fun HomeScreen(
                                         NewsItem(
                                             article = article,
                                             onClick = { onArticleClick(article) },
+                                            onToggleSave = { viewModel.toggleSaveArticle(article) },
                                             modifier = Modifier.width(300.dp)
                                         )
                                     }
@@ -145,8 +148,9 @@ fun HomeScreen(
                         items(count = allNews.itemCount) { index ->
                             allNews[index]?.let { article ->
                                 NewsItemSmall(
-                                    article = article,
+                                    article = article.copy(isSaved = savedArticleIds.contains(article.id)),
                                     onClick = { onArticleClick(article) },
+                                    onToggleSave = { viewModel.toggleSaveArticle(article) },
                                     modifier = Modifier.padding(horizontal = 16.dp)
                                 )
                             }
@@ -156,6 +160,7 @@ fun HomeScreen(
                             NewsItemSmall(
                                 article = article,
                                 onClick = { onArticleClick(article) },
+                                onToggleSave = { viewModel.toggleSaveArticle(article) },
                                 modifier = Modifier.padding(horizontal = 16.dp)
                             )
                         }

@@ -10,6 +10,5 @@ interface BaseArticleEntity {
     val imageUrl: String
     val title: String
     val content: String
-    val createdAt: Long
     val categories: String
 }

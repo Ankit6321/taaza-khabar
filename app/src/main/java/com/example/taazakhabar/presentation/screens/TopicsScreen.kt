@@ -35,12 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.taazakhabar.domain.model.Article
 import com.example.taazakhabar.domain.model.NewsTopics
 import com.example.taazakhabar.presentation.NewsViewModel
-import com.example.taazakhabar.presentation.components.TaazaKhabarAppBar
+import com.example.taazakhabar.presentation.components.AppBar
 import com.example.taazakhabar.presentation.components.TopicNewsItem
 import kotlinx.coroutines.launch
 
@@ -51,8 +52,9 @@ fun TopicsScreen(
     onArticleClick: (Article) -> Unit
 ) {
     val topicWiseNews = viewModel.topicWiseNews.collectAsLazyPagingItems()
-    val cachedTopicNews by viewModel.cachedTopicWiseNews.collectAsState()
-    val selectedTopic by viewModel.selectedTopic.collectAsState()
+    val cachedTopicNews by viewModel.cachedTopicWiseNews.collectAsStateWithLifecycle()
+    val selectedTopic by viewModel.selectedTopic.collectAsStateWithLifecycle()
+    val savedArticleIds by viewModel.savedArticleIds.collectAsStateWithLifecycle()
 
     val isRefreshing = topicWiseNews.loadState.refresh is LoadState.Loading
     val refreshError = topicWiseNews.loadState.refresh as? LoadState.Error
@@ -73,7 +75,7 @@ fun TopicsScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            TaazaKhabarAppBar(
+            AppBar(
                 error = refreshError?.error,
                 isRefreshing = isRefreshing
             )
@@ -116,8 +118,9 @@ fun TopicsScreen(
                         items(topicWiseNews.itemCount) { index ->
                             topicWiseNews[index]?.let { article ->
                                 TopicNewsItem(
-                                    article = article,
-                                    onClick = { onArticleClick(article) }
+                                    article = article.copy(isSaved = savedArticleIds.contains(article.id)),
+                                    onClick = { onArticleClick(article) },
+                                    onToggleSave = { viewModel.toggleSaveArticle(article) }
                                 )
                             }
                         }
@@ -125,7 +128,8 @@ fun TopicsScreen(
                         items(cachedTopicNews) { article ->
                             TopicNewsItem(
                                 article = article,
-                                onClick = { onArticleClick(article) }
+                                onClick = { onArticleClick(article) },
+                                onToggleSave = { viewModel.toggleSaveArticle(article) }
                             )
                         }
                     }

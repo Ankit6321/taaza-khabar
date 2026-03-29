@@ -15,6 +15,6 @@ interface CachedTrendingArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCachedArticles(articles: List<CachedTrendingArticleEntity>)
 
-    @Query("DELETE FROM cached_all_articles_table")
+    @Query("DELETE FROM cached_trending_articles_table")
     suspend fun deleteCachedArticles()
 }

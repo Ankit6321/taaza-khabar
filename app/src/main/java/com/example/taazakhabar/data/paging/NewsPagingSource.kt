@@ -61,7 +61,6 @@ class NewsPagingSource(
                 if (!trendingTopics)
                     when (category) {
                         "top_stories" -> {
-                            println("cached successfully")
                             cachedTopArticleDao.deleteCachedArticles()
 
                             val cacheList =

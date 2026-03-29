@@ -107,7 +107,6 @@ class NewsRepositoryImpl @Inject constructor(
                     imageUrl = article.imageUrl,
                     title = article.title,
                     content = article.content,
-                    createdAt = article.createdAt,
                     categories = article.categories.joinToString(",")
                 )
             )

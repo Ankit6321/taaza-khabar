@@ -32,11 +32,11 @@ import java.net.UnknownHostException
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaazaKhabarAppBar(
+fun AppBar(
+    modifier: Modifier = Modifier,
     error: Throwable? = null,
     isRefreshing: Boolean = false,
-    actions: @Composable RowScope.() -> Unit = {},
-    modifier: Modifier = Modifier
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     val isError = error != null && !isRefreshing
 
@@ -49,7 +49,7 @@ fun TaazaKhabarAppBar(
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 22.sp,
                     letterSpacing = 0.5.sp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.primary
                 )
             },
             actions = actions,
@@ -65,6 +65,7 @@ fun TaazaKhabarAppBar(
                 } else {
                     "Server error - showing cache" to Icons.Default.Info
                 }
+
                 is UnknownHostException -> "No internet connection" to Icons.Default.WifiOff
                 else -> "Showing cached data" to Icons.Default.Info
             }

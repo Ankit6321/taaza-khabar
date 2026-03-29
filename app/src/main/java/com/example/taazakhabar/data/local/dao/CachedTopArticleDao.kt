@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CachedTopArticleDao {
 
-    @Query("SELECT * FROM cached_all_articles_table")
+    @Query("SELECT * FROM cached_top_articles_table")
     fun getCachedArticles(): Flow<List<CachedTopArticleEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCachedArticles(articles: List<CachedTopArticleEntity>)
 
-    @Query("DELETE FROM cached_all_articles_table")
+    @Query("DELETE FROM cached_top_articles_table")
     suspend fun deleteCachedArticles()
 }

@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,8 +41,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.taazakhabar.domain.model.Article
 import com.example.taazakhabar.presentation.NewsViewModel
-import com.example.taazakhabar.presentation.components.TaazaKhabarAppBar
-import com.example.taazakhabar.presentation.components.TopicNewsItem
+import com.example.taazakhabar.presentation.components.AppBar
+import com.example.taazakhabar.presentation.components.SavedNewsItem
 import kotlinx.coroutines.launch
 
 @Composable
@@ -87,7 +86,7 @@ fun SavedArticlesScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            TaazaKhabarAppBar(
+            AppBar(
                 actions = {
                     if (savedArticles.isNotEmpty()) {
                         IconButton(onClick = { showDeleteDialog = true }) {
@@ -128,9 +127,10 @@ fun SavedArticlesScreen(
                     contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
                 ) {
                     items(savedArticles, key = { it.id }) { article ->
-                        TopicNewsItem(
+                        SavedNewsItem(
                             article = article,
-                            onClick = { onArticleClick(article) }
+                            onClick = { onArticleClick(article) },
+                            onDelete = { viewModel.toggleSaveArticle(article) }
                         )
                     }
                 }

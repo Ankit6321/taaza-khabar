@@ -13,7 +13,6 @@ fun List<NewsList>.toDomain(): List<Article> {
             imageUrl = articleDto.image_url,
             title = articleDto.title,
             content = articleDto.content,
-            createdAt = articleDto.created_at,
             categories = articleDto.categories
         )
     }

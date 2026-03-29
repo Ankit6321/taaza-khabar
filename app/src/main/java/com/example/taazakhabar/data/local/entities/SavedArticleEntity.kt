@@ -14,6 +14,5 @@ data class SavedArticleEntity(
     override val imageUrl: String,
     override val title: String,
     override val content: String,
-    override val createdAt: Long,
     override val categories: String,
 ): BaseArticleEntity

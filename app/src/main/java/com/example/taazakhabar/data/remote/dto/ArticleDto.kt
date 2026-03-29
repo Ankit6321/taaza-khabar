@@ -10,7 +10,6 @@ data class ArticleDto(
     val image_url: String,
     val title: String,
     val content: String,
-    val created_at: Long,
     @SerializedName("category_names")
     val categories: List<String>,
 )

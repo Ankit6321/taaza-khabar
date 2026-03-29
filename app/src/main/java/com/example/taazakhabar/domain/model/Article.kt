@@ -7,6 +7,6 @@ data class Article(
     val imageUrl: String,
     val title: String,
     val content: String,
-    val createdAt: Long,
     val categories: List<String>,
+    val isSaved: Boolean = false
 )

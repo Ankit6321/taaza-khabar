@@ -14,6 +14,7 @@ import com.example.taazakhabar.domain.useCases.GetCachedTrendingNewsUseCase
 import com.example.taazakhabar.domain.useCases.GetNewsUseCase
 import com.example.taazakhabar.domain.useCases.GetSavedArticlesUseCase
 import com.example.taazakhabar.domain.useCases.GetTopicWiseNewsUseCase
+import com.example.taazakhabar.domain.useCases.ToggleSaveArticleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -21,7 +22,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,19 +37,47 @@ class NewsViewModel @Inject constructor(
     private val getTopicWiseNewsUseCase: GetTopicWiseNewsUseCase,
     private val getCachedTopicNewsUseCase: GetCachedTopicNewsUseCase,
     private val getSavedArticlesUseCase: GetSavedArticlesUseCase,
-    private val deleteAllSavedArticlesUseCase: DeleteAllSavedArticlesUseCase
+    private val deleteAllSavedArticlesUseCase: DeleteAllSavedArticlesUseCase,
+    private val toggleSaveArticleUseCase: ToggleSaveArticleUseCase
 ) : ViewModel() {
 
-    val trendingNews = getNewsUseCase(NewsCategory.TRENDING).cachedIn(viewModelScope)
-    val topNews = getNewsUseCase(NewsCategory.TOP_STORIES).cachedIn(viewModelScope)
-
-    val cachedTrendingNews = getCachedTrendingNewsUseCase().stateIn(
+    val savedArticles = getSavedArticlesUseCase().stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(3000),
         emptyList()
     )
 
-    val cachedTopNews = getCachedTopNewsUseCase().stateIn(
+    val savedArticleIds = savedArticles.map { articles ->
+        articles.map { it.id }.toSet()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(3000), emptySet())
+
+    val trendingNews: Flow<PagingData<Article>> = getNewsUseCase(NewsCategory.TRENDING)
+        .cachedIn(viewModelScope)
+
+    val topNews: Flow<PagingData<Article>> = getNewsUseCase(NewsCategory.TOP_STORIES)
+        .cachedIn(viewModelScope)
+
+    val cachedTrendingNews: StateFlow<List<Article>> = combine(
+        getCachedTrendingNewsUseCase(),
+        savedArticleIds
+    ) { articles, savedIds ->
+        articles.map { article ->
+            article.copy(isSaved = savedIds.contains(article.id))
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(3000),
+        emptyList()
+    )
+
+    val cachedTopNews: StateFlow<List<Article>> = combine(
+        getCachedTopNewsUseCase(),
+        savedArticleIds
+    ) { articles, savedIds ->
+        articles.map { article ->
+            article.copy(isSaved = savedIds.contains(article.id))
+        }
+    }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(3000),
         emptyList()
@@ -62,14 +93,15 @@ class NewsViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val cachedTopicWiseNews: StateFlow<List<Article>> = _selectedTopic.flatMapLatest { topic ->
-        getCachedTopicNewsUseCase(topic)
+        combine(
+            getCachedTopicNewsUseCase(topic),
+            savedArticleIds
+        ) { articles, savedIds ->
+            articles.map { article ->
+                article.copy(isSaved = savedIds.contains(article.id))
+            }
+        }
     }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(3000),
-        emptyList()
-    )
-
-    val savedArticles = getSavedArticlesUseCase().stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(3000),
         emptyList()
@@ -77,6 +109,12 @@ class NewsViewModel @Inject constructor(
 
     fun onTopicSelected(topic: NewsTopics) {
         _selectedTopic.value = topic
+    }
+
+    fun toggleSaveArticle(article: Article) {
+        viewModelScope.launch {
+            toggleSaveArticleUseCase(article)
+        }
     }
 
     fun clearAllSavedArticles() {

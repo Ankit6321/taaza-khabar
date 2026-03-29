@@ -3,7 +3,7 @@ package com.example.taazakhabar.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cached_all_articles_table")
+@Entity(tableName = "cached_top_articles_table")
 data class CachedTopArticleEntity(
     @PrimaryKey(autoGenerate = false)
     override val id: String,
@@ -12,6 +12,5 @@ data class CachedTopArticleEntity(
     override val imageUrl: String,
     override val title: String,
     override val content: String,
-    override val createdAt: Long,
     override val categories: String,
 ): BaseArticleEntity
