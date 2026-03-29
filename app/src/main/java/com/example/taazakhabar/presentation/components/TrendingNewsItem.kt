@@ -23,11 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.taazakhabar.R
 import com.example.taazakhabar.domain.model.Article
 
 @Composable
@@ -57,9 +59,11 @@ fun TrendingNewsItem(
                 model = article.imageUrl,
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.image_placeholder),
+                error = painterResource(id = R.drawable.image_placeholder)
             )
-            
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()

@@ -1,7 +1,6 @@
 package com.example.taazakhabar.domain.useCases
 
 import com.example.taazakhabar.domain.model.Article
-import com.example.taazakhabar.domain.model.NewsCategory
 import com.example.taazakhabar.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

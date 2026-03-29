@@ -4,7 +4,7 @@ import com.example.taazakhabar.data.local.entities.BaseArticleEntity
 import com.example.taazakhabar.data.remote.dto.NewsList
 import com.example.taazakhabar.domain.model.Article
 
-fun <T: BaseArticleEntity> List<NewsList>.toEntity(
+fun <T : BaseArticleEntity> List<NewsList>.toEntity(
     constructor: (String, String, String, String, String, String, String) -> T
 ): List<T> {
     return this.map { item ->

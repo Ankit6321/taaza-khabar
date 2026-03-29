@@ -4,11 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.taazakhabar.data.local.ArticleDatabase
-import com.example.taazakhabar.data.local.dao.CachedTopArticleDao
 import com.example.taazakhabar.data.local.dao.CachedEntertainmentArticleDao
 import com.example.taazakhabar.data.local.dao.CachedScienceArticleDao
 import com.example.taazakhabar.data.local.dao.CachedSportsArticleDao
 import com.example.taazakhabar.data.local.dao.CachedTechnologyArticleDao
+import com.example.taazakhabar.data.local.dao.CachedTopArticleDao
 import com.example.taazakhabar.data.local.dao.CachedTrendingArticleDao
 import com.example.taazakhabar.data.local.dao.SavedArticleDao
 import com.example.taazakhabar.data.local.entities.SavedArticleEntity

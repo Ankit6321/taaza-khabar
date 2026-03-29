@@ -1,6 +1,5 @@
 package com.example.taazakhabar.data.local.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert

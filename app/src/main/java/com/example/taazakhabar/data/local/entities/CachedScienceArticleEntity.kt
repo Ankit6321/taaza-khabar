@@ -13,4 +13,4 @@ data class CachedScienceArticleEntity(
     override val title: String,
     override val content: String,
     override val categories: String,
-): BaseArticleEntity
+) : BaseArticleEntity

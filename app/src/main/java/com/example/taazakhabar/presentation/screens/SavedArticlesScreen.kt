@@ -55,7 +55,7 @@ fun SavedArticlesScreen(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     var showDeleteDialog by remember { mutableStateOf(false) }
-    
+
     val showFab by remember {
         derivedStateOf {
             listState.firstVisibleItemIndex > 2

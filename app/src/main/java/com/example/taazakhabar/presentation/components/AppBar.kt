@@ -45,7 +45,7 @@ fun AppBar(
             modifier = Modifier.statusBarsPadding(),
             title = {
                 Text(
-                    text = "TaazaKhabar",
+                    text = "Taaza Khabar",
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 28.sp,
                     letterSpacing = 0.5.sp,
@@ -54,7 +54,7 @@ fun AppBar(
             },
             actions = actions,
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainer
+                containerColor = MaterialTheme.colorScheme.surface
             )
         )
 

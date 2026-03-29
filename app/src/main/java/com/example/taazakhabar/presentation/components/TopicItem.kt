@@ -23,11 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.taazakhabar.R
 import com.example.taazakhabar.domain.model.Article
 
 @Composable
@@ -56,7 +58,9 @@ fun TopicNewsItem(
                         .fillMaxWidth()
                         .height(200.dp)
                         .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = R.drawable.image_placeholder),
+                    error = painterResource(R.drawable.image_placeholder)
                 )
 
                 IconButton(
@@ -73,7 +77,7 @@ fun TopicNewsItem(
                     )
                 }
             }
-            
+
             Column(
                 modifier = Modifier
                     .padding(16.dp)
@@ -85,9 +89,9 @@ fun TopicNewsItem(
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.sp
                 )
-                
+
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 Text(
                     text = article.title,
                     style = MaterialTheme.typography.titleLarge.copy(

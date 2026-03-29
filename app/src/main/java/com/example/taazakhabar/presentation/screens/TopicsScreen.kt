@@ -27,14 +27,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -67,14 +65,13 @@ fun TopicsScreen(
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    
+
     val showFab by remember {
         derivedStateOf {
             listState.firstVisibleItemIndex > 2
         }
     }
 
-    // Smooth scroll to top when topic changes
     LaunchedEffect(selectedTopic) {
         listState.animateScrollToItem(0)
     }
@@ -85,11 +82,11 @@ fun TopicsScreen(
                 error = refreshError?.error,
                 isRefreshing = isRefreshing
             )
-            
+
             ScrollableTabRow(
                 selectedTabIndex = selectedTopic.ordinal,
                 edgePadding = 16.dp,
-                containerColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface,
                 divider = {},
                 indicator = { tabPositions ->
                     TabRowDefaults.SecondaryIndicator(
@@ -142,7 +139,11 @@ fun TopicsScreen(
                         items(topicWiseNews.itemCount) { index ->
                             topicWiseNews[index]?.let { article ->
                                 TopicNewsItem(
-                                    article = article.copy(isSaved = savedArticleIds.contains(article.id)),
+                                    article = article.copy(
+                                        isSaved = savedArticleIds.contains(
+                                            article.id
+                                        )
+                                    ),
                                     onClick = { onArticleClick(article) },
                                     onToggleSave = { viewModel.toggleSaveArticle(article) }
                                 )
