@@ -95,7 +95,7 @@ fun TrendingNewsItem(
                     text = article.title,
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = Color.White,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.SemiBold,
                         lineHeight = 20.sp
                     ),
                     maxLines = 2,

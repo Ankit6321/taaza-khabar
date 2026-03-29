@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,13 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.taazakhabar.R
 import com.example.taazakhabar.domain.model.Article
 
 @Composable
@@ -44,7 +44,7 @@ fun SavedNewsItem(
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         shadowElevation = 4.dp,
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        color = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -58,8 +58,8 @@ fun SavedNewsItem(
                         .height(200.dp)
                         .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                     contentScale = ContentScale.Crop,
-                    placeholder = rememberVectorPainter(Icons.Default.Image),
-                    error = rememberVectorPainter(Icons.Default.Image)
+                    placeholder = painterResource(id = R.drawable.image_placeholder),
+                    error = painterResource(R.drawable.image_placeholder)
                 )
 
                 IconButton(
@@ -94,7 +94,7 @@ fun SavedNewsItem(
                 Text(
                     text = article.title,
                     style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.SemiBold,
                         lineHeight = 26.sp,
                         fontSize = 18.sp
                     ),
