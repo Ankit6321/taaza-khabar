@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -30,10 +31,10 @@ import coil.compose.AsyncImage
 import com.example.taazakhabar.domain.model.Article
 
 @Composable
-fun SavedNewsItem(
+fun TopicNewsItem(
     article: Article,
     onClick: () -> Unit,
-    onDelete: () -> Unit,
+    onToggleSave: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -42,7 +43,7 @@ fun SavedNewsItem(
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         shadowElevation = 4.dp,
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        color = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -59,14 +60,14 @@ fun SavedNewsItem(
                 )
 
                 IconButton(
-                    onClick = onDelete,
+                    onClick = onToggleSave,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(8.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Delete,
-                        contentDescription = "Delete article",
+                        imageVector = if (article.isSaved) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                        contentDescription = if (article.isSaved) "Unsave article" else "Save article",
                         tint = Color.White,
                         modifier = Modifier.size(28.dp)
                     )

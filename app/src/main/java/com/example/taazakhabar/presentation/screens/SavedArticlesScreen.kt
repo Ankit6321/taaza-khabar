@@ -3,6 +3,7 @@ package com.example.taazakhabar.presentation.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -124,7 +125,8 @@ fun SavedArticlesScreen(
                 LazyColumn(
                     state = listState,
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(savedArticles, key = { it.id }) { article ->
                         SavedNewsItem(
@@ -143,7 +145,7 @@ fun SavedArticlesScreen(
             exit = fadeOut(),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(16.dp)
+                .padding(24.dp)
         ) {
             FloatingActionButton(
                 onClick = {
@@ -151,8 +153,8 @@ fun SavedArticlesScreen(
                         listState.animateScrollToItem(0)
                     }
                 },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,

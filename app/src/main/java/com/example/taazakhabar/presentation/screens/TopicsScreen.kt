@@ -3,6 +3,7 @@ package com.example.taazakhabar.presentation.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +24,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -43,6 +45,7 @@ import com.example.taazakhabar.domain.model.NewsTopics
 import com.example.taazakhabar.presentation.NewsViewModel
 import com.example.taazakhabar.presentation.components.AppBar
 import com.example.taazakhabar.presentation.components.TopicNewsItem
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,6 +58,9 @@ fun TopicsScreen(
     val cachedTopicNews by viewModel.cachedTopicWiseNews.collectAsStateWithLifecycle()
     val selectedTopic by viewModel.selectedTopic.collectAsStateWithLifecycle()
     val savedArticleIds by viewModel.savedArticleIds.collectAsStateWithLifecycle()
+
+    val trendingNews = viewModel.trendingNews.collectAsLazyPagingItems()
+    val topNews = viewModel.topNews.collectAsLazyPagingItems()
 
     val isRefreshing = topicWiseNews.loadState.refresh is LoadState.Loading
     val refreshError = topicWiseNews.loadState.refresh as? LoadState.Error
@@ -88,7 +94,7 @@ fun TopicsScreen(
                 indicator = { tabPositions ->
                     TabRowDefaults.SecondaryIndicator(
                         Modifier.tabIndicatorOffset(tabPositions[selectedTopic.ordinal]),
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             ) {
@@ -101,18 +107,36 @@ fun TopicsScreen(
                                 text = topic.name,
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Bold,
-                                color = if (selectedTopic == topic) Color.Red else Color.Gray
+                                color = if (selectedTopic == topic) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
                             )
                         }
                     )
                 }
             }
 
-            Box(modifier = Modifier.fillMaxSize()) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    coroutineScope.launch {
+                        topicWiseNews.refresh()
+
+                        while (topicWiseNews.loadState.refresh is LoadState.Loading) {
+                            delay(100)
+                        }
+
+                        if (topicWiseNews.loadState.refresh !is LoadState.Error) {
+                            trendingNews.refresh()
+                            topNews.refresh()
+                        }
+                    }
+                },
+                modifier = Modifier.fillMaxSize()
+            ) {
                 LazyColumn(
                     state = listState,
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(vertical = 16.dp)
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     if (topicWiseNews.itemCount > 0) {
                         items(topicWiseNews.itemCount) { index ->
@@ -152,7 +176,7 @@ fun TopicsScreen(
             exit = fadeOut(),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(16.dp)
+                .padding(24.dp)
         ) {
             FloatingActionButton(
                 onClick = {
@@ -160,8 +184,8 @@ fun TopicsScreen(
                         listState.animateScrollToItem(0)
                     }
                 },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,

@@ -1,13 +1,20 @@
 package com.example.taazakhabar.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,11 +31,25 @@ import coil.compose.AsyncImage
 import com.example.taazakhabar.domain.model.Article
 
 @Composable
-fun NewsItem(article: Article, modifier: Modifier = Modifier) {
+fun TrendingNewsItem(
+    article: Article,
+    onClick: () -> Unit,
+    onToggleSave: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val gradient: Brush = Brush.verticalGradient(
+        colors = listOf(
+            Color.Transparent,
+            Color.Black.copy(alpha = 0.7f)
+        ),
+        startY = 300f
+    )
+
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(200.dp),
+            .height(200.dp)
+            .clickable { onClick() },
         shape = MaterialTheme.shapes.medium
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -39,20 +60,27 @@ fun NewsItem(article: Article, modifier: Modifier = Modifier) {
                 contentScale = ContentScale.Crop
             )
             
-            // Gradient overlay for text readability
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black.copy(alpha = 0.7f)
-                            ),
-                            startY = 300f
-                        )
+                        gradient
                     )
             )
+
+            IconButton(
+                onClick = onToggleSave,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp)
+            ) {
+                Icon(
+                    imageVector = if (article.isSaved) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                    contentDescription = if (article.isSaved) "Unsave article" else "Save article",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
 
             Column(
                 modifier = Modifier

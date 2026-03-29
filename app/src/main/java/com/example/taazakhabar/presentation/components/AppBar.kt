@@ -47,14 +47,14 @@ fun AppBar(
                 Text(
                     text = "TaazaKhabar",
                     fontWeight = FontWeight.ExtraBold,
-                    fontSize = 22.sp,
+                    fontSize = 28.sp,
                     letterSpacing = 0.5.sp,
                     color = MaterialTheme.colorScheme.primary
                 )
             },
             actions = actions,
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.surfaceContainer
             )
         )
 
