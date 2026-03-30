@@ -64,6 +64,7 @@ fun SavedArticlesScreen(
 
     if (showDeleteDialog) {
         AlertDialog(
+            containerColor = MaterialTheme.colorScheme.surface,
             onDismissRequest = { showDeleteDialog = false },
             text = { Text(text = "Are you sure you want to delete all saved articles?") },
             confirmButton = {
@@ -94,7 +95,8 @@ fun SavedArticlesScreen(
                             Icon(
                                 imageVector = Icons.Default.DeleteSweep,
                                 contentDescription = "Clear All",
-                                tint = Color.Red
+                                tint = Color.Red,
+                                modifier = Modifier.size(28.dp)
                             )
                         }
                     }

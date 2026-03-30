@@ -86,6 +86,12 @@ class NewsViewModel @Inject constructor(
     private val _selectedTopic = MutableStateFlow(NewsTopics.SCIENCE)
     val selectedTopic: StateFlow<NewsTopics> = _selectedTopic.asStateFlow()
 
+    private val _selectedTab = MutableStateFlow(0)
+    val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
+
+    private val _selectedArticle = MutableStateFlow<Article?>(null)
+    val selectedArticle: StateFlow<Article?> = _selectedArticle.asStateFlow()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val topicWiseNews: Flow<PagingData<Article>> = _selectedTopic.flatMapLatest { topic ->
         getTopicWiseNewsUseCase(topic)
@@ -109,6 +115,14 @@ class NewsViewModel @Inject constructor(
 
     fun onTopicSelected(topic: NewsTopics) {
         _selectedTopic.value = topic
+    }
+
+    fun onTabSelected(tabIndex: Int) {
+        _selectedTab.value = tabIndex
+    }
+
+    fun onArticleClicked(article: Article?) {
+        _selectedArticle.value = article
     }
 
     fun toggleSaveArticle(article: Article) {
