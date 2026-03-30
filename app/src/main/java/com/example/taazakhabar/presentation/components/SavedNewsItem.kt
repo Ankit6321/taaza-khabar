@@ -66,13 +66,12 @@ fun SavedNewsItem(
                     onClick = onDelete,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(8.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = "Delete article",
-                        tint = Color.White,
-                        modifier = Modifier.size(28.dp)
+                        tint = Color.Red,
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }

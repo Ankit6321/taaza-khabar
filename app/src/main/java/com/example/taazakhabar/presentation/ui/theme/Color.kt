@@ -10,4 +10,4 @@ val Grey5 = Color(0xFF0D0D0D)
 val Grey90 = Color(0xFFE6E6E6)
 val Grey95 = Color(0xFFF2F2F2)
 
-val BlueCyan = Color(0xFF03DAC5)
+val BlueCyan = Color(0xFF02C7B4)
