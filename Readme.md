@@ -97,6 +97,11 @@ Dark Theme:
 | ![](screenshots/home_dark.png) | ![](screenshots/topic_dark.png) | ![](screenshots/saved_dark.png) | ![](screenshots/detail_dark.png) |
 ---
 
+## 🎥 Gifs
+| Splash Screen                      | Splash Screen(dark)                     | Delete All                      |
+|------------------------------------|-----------------------------------------|---------------------------------|
+| ![](screenshots/splash_screen.gif) | ![](screenshots/splash_screen_dark.gif) | ![](screenshots/delete_all.gif) |
+
 ## 🎨 UI & Design
 
 * App logo designed using **Inkscape**
@@ -114,7 +119,7 @@ Dark Theme:
 ### ✅ Solution
 
 * Implemented a custom batch-based caching mechanism
-* Stored articles in chunks (10 per load)
+* Stored articles in chunks (15 per load)
 * Used multiple caching tables to simulate pagination
 * Ensed smooth scrolling and offline access
 
